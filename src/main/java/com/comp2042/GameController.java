@@ -2,60 +2,72 @@ package com.comp2042;
 
 public class GameController implements InputEventListener {
 
-    private Board board = new SimpleBoard(25, 10);
+    private static final int BOARD_HEIGHT = 25;
+    private static final int BOARD_WIDTH = 10;
 
+    private final Board board = new SimpleBoard(BOARD_HEIGHT, BOARD_WIDTH);
     private final GuiController viewGuiController;
 
     public GameController(GuiController c) {
-        viewGuiController = c;
+        this.viewGuiController = c;
+        initGame();
+    }
+
+    private void initGame() {
         board.createNewBrick();
         viewGuiController.setEventListener(this);
         viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
         viewGuiController.bindScore(board.getScore().scoreProperty());
     }
 
+    private ClearRow handleBrickLanding() {
+        board.mergeBrickToBackground();
+        ClearRow clearRow = board.clearRows();
+
+        if (clearRow.getLinesRemoved() > 0) {
+            board.getScore().add(clearRow.getScoreBonus());
+        }
+
+        if (board.createNewBrick()) {
+            viewGuiController.gameOver();
+        }
+
+        viewGuiController.refreshGameBackground(board.getBoardMatrix());
+        return clearRow;
+    }
+
+    private ViewData updateAndGetView(Runnable action) {
+        action.run();
+        return board.getViewData();
+    }
+
     @Override
     public DownData onDownEvent(MoveEvent event) {
-        boolean canMove = board.moveBrickDown();
         ClearRow clearRow = null;
-        if (!canMove) {
-            board.mergeBrickToBackground();
-            clearRow = board.clearRows();
-            if (clearRow.getLinesRemoved() > 0) {
-                board.getScore().add(clearRow.getScoreBonus());
-            }
-            if (board.createNewBrick()) {
-                viewGuiController.gameOver();
-            }
 
-            viewGuiController.refreshGameBackground(board.getBoardMatrix());
-
-        } else {
-            if (event.getEventSource() == EventSource.USER) {
-                board.getScore().add(1);
-            }
+        if (!board.moveBrickDown()) {
+            clearRow = handleBrickLanding();
+        } else if (event.getEventSource() == EventSource.USER) {
+            board.getScore().add(1);
         }
+
         return new DownData(clearRow, board.getViewData());
     }
 
     @Override
     public ViewData onLeftEvent(MoveEvent event) {
-        board.moveBrickLeft();
-        return board.getViewData();
+        return updateAndGetView(board::moveBrickLeft);
     }
 
     @Override
     public ViewData onRightEvent(MoveEvent event) {
-        board.moveBrickRight();
-        return board.getViewData();
+        return updateAndGetView(board::moveBrickRight);
     }
 
     @Override
     public ViewData onRotateEvent(MoveEvent event) {
-        board.rotateLeftBrick();
-        return board.getViewData();
+        return updateAndGetView(board::moveBrickLeft);
     }
-
 
     @Override
     public void createNewGame() {
