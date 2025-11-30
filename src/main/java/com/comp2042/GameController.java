@@ -66,7 +66,7 @@ public class GameController implements InputEventListener {
 
     @Override
     public ViewData onRotateEvent(MoveEvent event) {
-        return updateAndGetView(board::moveBrickLeft);
+        return updateAndGetView(board::rotateLeftBrick);
     }
 
     @Override
