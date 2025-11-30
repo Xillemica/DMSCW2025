@@ -184,6 +184,10 @@ public class GuiController implements Initializable {
         this.eventListener = eventListener;
     }
 
+    public void bindScore(javafx.beans.property.IntegerProperty scoreProperty) {
+    gameOverPanel.bindScore(scoreProperty);
+}
+
     public void gameOver() {
         timeLine.stop();
         gameOverPanel.setVisible(true);
