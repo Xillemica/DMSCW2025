@@ -13,6 +13,9 @@ public class Main extends Application {
     private static final int SCENE_WIDTH = 300;
     private static final int SCENE_HEIGHT = 510;
 
+    @SuppressWarnings("unused")
+    private GameController gameController;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         setupStage(primaryStage);
@@ -29,9 +32,8 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        new GameController(guiController);
+        gameController = new GameController(guiController);
     }
-
 
     public static void main(String[] args) {
         launch(args);
