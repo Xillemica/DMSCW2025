@@ -69,6 +69,16 @@ public class GameController implements InputEventListener {
         return updateAndGetView(board::rotateLeftBrick);
     }
 
+    public ViewData hardDrop() {
+        while (board.moveBrickDown()) {}
+        handleBrickLanding();
+        return board.getViewData();
+    }
+    @Override
+    public ViewData onHardDropEvent() {
+        return hardDrop();
+}
+
     @Override
     public void createNewGame() {
         board.newGame();

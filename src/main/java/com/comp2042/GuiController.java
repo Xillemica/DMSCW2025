@@ -80,6 +80,7 @@ public class GuiController implements Initializable {
                 case RIGHT, D -> refreshBrick(eventListener.onRightEvent(new MoveEvent(EventType.RIGHT, EventSource.USER)));
                 case UP, W -> refreshBrick(eventListener.onRotateEvent(new MoveEvent(EventType.ROTATE, EventSource.USER)));
                 case DOWN, S -> moveDown(new MoveEvent(EventType.DOWN, EventSource.USER));
+                case SPACE -> refreshBrick(eventListener.onHardDropEvent());
             }
         }
         if (keyEvent.getCode() == KeyCode.N) {
