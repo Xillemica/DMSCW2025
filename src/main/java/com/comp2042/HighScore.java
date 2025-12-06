@@ -23,7 +23,23 @@ public class HighScore implements Comparable<HighScore> {
     }
 
     public static HighScore fromString(String line) {
-        String[] p = line.split(",");
-        return new HighScore(p[0], Integer.parseInt(p[1]));
+    if (line == null || line.isBlank()) {
+        return new HighScore("Unknown", 0);
     }
+
+    String[] p = line.split(",");
+    String name = p.length > 0 ? p[0].trim() : "Unknown";
+
+    int score = 0;
+    if (p.length > 1) {
+        try {
+            score = Integer.parseInt(p[1].trim());
+        } catch (NumberFormatException e) {
+            score = 0;
+        }
+    }
+
+    return new HighScore(name, score);
+}
+
 }

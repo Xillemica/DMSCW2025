@@ -15,11 +15,13 @@ public class Main extends Application {
 
     @SuppressWarnings("unused")
     private GameController gameController;
-
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
-        setupStage(primaryStage);
-    }
+        Scoreboard scoreboard = new Scoreboard();
+        StartScreen startScreen = new StartScreen(scoreboard);
+        startScreen.show(primaryStage);
+}
 
     private void setupStage(Stage primaryStage) throws Exception {
         URL location = getClass().getClassLoader().getResource("gameLayout.fxml");

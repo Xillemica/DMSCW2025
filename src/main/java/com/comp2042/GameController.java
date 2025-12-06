@@ -40,6 +40,18 @@ public class GameController implements InputEventListener {
         action.run();
         return board.getViewData();
     }
+    private Runnable onGameOver;
+    
+    public void setOnGameOver(Runnable callback) {
+        this.onGameOver = callback;
+        }
+    
+    private void gameOver() {
+        if (onGameOver != null) {
+            onGameOver.run();
+            }
+        }
+
 
     @Override
     public DownData onDownEvent(MoveEvent event) {
@@ -84,4 +96,15 @@ public class GameController implements InputEventListener {
         board.newGame();
         viewGuiController.refreshGameBackground(board.getBoardMatrix());
     }
+    public int[][] getBoardMatrix() {
+    return board.getBoardMatrix();
+}
+
+public ViewData getViewData() {
+    return board.getViewData();
+}
+
+public void resetGame() {
+    initGame();
+}
 }

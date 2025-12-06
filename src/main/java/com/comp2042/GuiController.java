@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GuiController implements Initializable {
@@ -92,8 +93,9 @@ public class GuiController implements Initializable {
             togglePause();
         }
         if (keyEvent.getCode() == KeyCode.N) {
-            newGame(null);
-        }
+            StartScreen startScreen = new StartScreen(scoreboard);
+            startScreen.show((Stage) gamePanel.getScene().getWindow());
+}
         if (keyEvent.getCode() == KeyCode.H) {
             showScoreboard();
         }
@@ -257,5 +259,8 @@ private void showScoreboard() {
         timeLine.stop();
         isPause.set(true);
     }
+}
+public GridPane getRootPane() {
+    return gamePanel;
 }
 }
