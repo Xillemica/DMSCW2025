@@ -1,6 +1,7 @@
 package com.comp2042;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
@@ -11,6 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.Reflection;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -43,6 +46,8 @@ public class GuiController implements Initializable {
     private InputEventListener eventListener;
     private final BooleanProperty isPause = new SimpleBooleanProperty();
     private final BooleanProperty isGameOver = new SimpleBooleanProperty();
+    private final Scoreboard scoreboard = new Scoreboard();
+    private Score score = new Score();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -88,6 +93,9 @@ public class GuiController implements Initializable {
         }
         if (keyEvent.getCode() == KeyCode.N) {
             newGame(null);
+        }
+        if (keyEvent.getCode() == KeyCode.H) {
+            showScoreboard();
         }
         keyEvent.consume();
     }
@@ -183,6 +191,34 @@ public class GuiController implements Initializable {
             notificationPanel.showScore(groupNotification.getChildren());
         }
     }
+    private void saveScoreAtGameOver() {
+    int finalScore = score.scoreProperty().get();
+    
+    TextInputDialog dialog = new TextInputDialog("Player");
+    dialog.setHeaderText("Game Over! Your score: " + finalScore);
+    dialog.setContentText("Enter your name:");
+
+    Optional<String> result = dialog.showAndWait();
+    String name = result.orElse("Anonymous");
+
+    scoreboard.addScore(new HighScore(name, finalScore));
+}
+private void showScoreboard() {
+    StringBuilder sb = new StringBuilder("Top 5 Scores:\n\n");
+
+    for (HighScore hs : scoreboard.getScores()) {
+        sb.append(hs.getName())
+          .append(" — ")
+          .append(hs.getScore())
+          .append("\n");
+    }
+
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Scoreboard");
+    alert.setHeaderText("High Scores");
+    alert.setContentText(sb.toString());
+    alert.showAndWait();
+}
 
     public void setEventListener(InputEventListener eventListener) {
         this.eventListener = eventListener;
@@ -196,6 +232,7 @@ public class GuiController implements Initializable {
         timeLine.stop();
         gameOverPanel.setVisible(true);
         isGameOver.set(true);
+        saveScoreAtGameOver();
     }
 
     public void newGame(ActionEvent actionEvent) {
@@ -211,7 +248,7 @@ public class GuiController implements Initializable {
     public void pauseGame(ActionEvent actionEvent) {
         gamePanel.requestFocus();
     }
-    
+
     private void togglePause() {
     if (isPause.get()) {
         timeLine.play();
