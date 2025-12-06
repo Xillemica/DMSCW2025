@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,7 +49,12 @@ public class GuiController implements Initializable {
     private final BooleanProperty isPause = new SimpleBooleanProperty();
     private final BooleanProperty isGameOver = new SimpleBooleanProperty();
     private final Scoreboard scoreboard = new Scoreboard();
-    private final Score score = new Score();
+    private IntegerProperty currentScore;
+    
+    public void bindScore(IntegerProperty scoreProperty) {
+        this.currentScore = scoreProperty;
+        gameOverPanel.bindScore(scoreProperty); 
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,7 +101,7 @@ public class GuiController implements Initializable {
         if (keyEvent.getCode() == KeyCode.N) {
             StartScreen startScreen = new StartScreen(scoreboard);
             startScreen.show((Stage) gamePanel.getScene().getWindow());
-}
+        }
         if (keyEvent.getCode() == KeyCode.H) {
             showScoreboard();
         }
@@ -194,7 +200,7 @@ public class GuiController implements Initializable {
         }
     }
     private void saveScoreAtGameOver() {
-    int finalScore = score.scoreProperty().get();
+    int finalScore = currentScore.get();
     
     TextInputDialog dialog = new TextInputDialog("Player");
     dialog.setHeaderText("Game Over! Your score: " + finalScore);
@@ -204,32 +210,30 @@ public class GuiController implements Initializable {
     String name = result.orElse("Anonymous");
 
     scoreboard.addScore(new HighScore(name, finalScore));
-}
-private void showScoreboard() {
-    StringBuilder sb = new StringBuilder("Top 5 Scores:\n\n");
-
-    for (HighScore hs : scoreboard.getScores()) {
-        sb.append(hs.getName())
-          .append(" — ")
-          .append(hs.getScore())
-          .append("\n");
+    scoreboard.saveScores();
     }
+    
+    private void showScoreboard() {
+        StringBuilder sb = new StringBuilder("Top 5 Scores:\n\n");
+        
+        for (HighScore hs : scoreboard.getScores()) {
+            sb.append(hs.getName())
+            .append(" — ")
+            .append(hs.getScore())
+            .append("\n");
+        }
 
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle("Scoreboard");
     alert.setHeaderText("High Scores");
     alert.setContentText(sb.toString());
     alert.showAndWait();
-}
+    }
 
     public void setEventListener(InputEventListener eventListener) {
         this.eventListener = eventListener;
     }
-
-    public void bindScore(javafx.beans.property.IntegerProperty scoreProperty) {
-    gameOverPanel.bindScore(scoreProperty);
-}
-
+    
     public void gameOver() {
         timeLine.stop();
         gameOverPanel.setVisible(true);
@@ -259,8 +263,9 @@ private void showScoreboard() {
         timeLine.stop();
         isPause.set(true);
     }
-}
-public GridPane getRootPane() {
+    }
+    
+    public GridPane getRootPane() {
     return gamePanel;
-}
+    }
 }

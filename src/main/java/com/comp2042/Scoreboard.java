@@ -44,20 +44,20 @@ public class Scoreboard {
                 scores.add(HighScore.fromString(line));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error loading scores: " + e.getMessage());
         }
 
         Collections.sort(scores);
     }
 
-    private void saveScores() {
+    public void saveScores() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (HighScore score : scores) {
                 writer.write(score.toString());
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error saving scores: " + e.getMessage());
         }
     }
 }

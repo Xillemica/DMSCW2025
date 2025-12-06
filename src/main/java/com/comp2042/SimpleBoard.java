@@ -111,7 +111,6 @@ public class SimpleBoard implements Board {
     @Override
     public void newGame() {
         currentGameMatrix = new int[width][height];
-        score.reset();
         createNewBrick();
     }
 }

@@ -35,25 +35,34 @@ public class StartScreen {
         }
 
         Button startButton = new Button("Start Game");
+        
         startButton.setOnAction(e -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("gameLayout.fxml"));
                 Parent gameRoot = fxmlLoader.load();
                 GuiController guiController = fxmlLoader.getController();
-
-                new GameController(guiController);
-
+                
+                @SuppressWarnings("unused")
+                GameController gameController = new GameController(guiController);
+                
                 Scene gameScene = new Scene(gameRoot, 300, 510);
                 stage.setScene(gameScene);
                 stage.setTitle("TetrisJFX");
                 stage.show();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (java.io.IOException | java.lang.NullPointerException ex) {
+                System.err.println("Error loading game: " + ex.getMessage());
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                    javafx.scene.control.Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Could not load game");
+                    alert.setContentText("Failed to load game interface. Please check if all files are present.");
+                    alert.showAndWait();
+                }
             }
-        });
+        );
 
         root.getChildren().addAll(title, scoreLabel, scoreList, startButton);
-
+        
         Scene scene = new Scene(root, 300, 510);
         stage.setScene(scene);
         stage.setTitle("Tetris Start");
