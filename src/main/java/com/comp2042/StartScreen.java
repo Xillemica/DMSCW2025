@@ -19,23 +19,27 @@ public class StartScreen {
 
     public void show(Stage stage) {
         VBox root = new VBox(20);
-        root.setStyle("-fx-alignment: center; -fx-padding: 50;");
+        root.setStyle("-fx-alignment: center; -fx-padding: 50; -fx-background-color: #1e1e1e;");
 
         Label title = new Label("TETRIS");
-        title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
+        title.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
 
         Label scoreLabel = new Label("High Scores:");
-        scoreLabel.setStyle("-fx-font-size: 18px;");
+        scoreLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #dddddd;");
 
         ListView<String> scoreList = new ListView<>();
         scoreList.setPrefSize(200, 200);
+        scoreList.setStyle( "-fx-control-inner-background: #2e2e2e;" + "-fx-text-fill: #ffffff;" + "-fx-font-size: 16px;" );
 
         for (HighScore hs : scoreboard.getScores()) {
             scoreList.getItems().add(hs.getName() + " - " + hs.getScore());
         }
 
         Button startButton = new Button("Start Game");
-        
+        startButton.setStyle("-fx-background-color: #444444; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-padding: 8 16 8 16;");
+        startButton.setOnMouseEntered(e -> startButton.setStyle("-fx-background-color: #666666; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-padding: 8 16 8 16;"));
+        startButton.setOnMouseExited(e -> startButton.setStyle("-fx-background-color: #444444; -fx-text-fill: #ffffff; -fx-font-weight: bold; -fx-padding: 8 16 8 16;"));
+
         startButton.setOnAction(e -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("gameLayout.fxml"));
