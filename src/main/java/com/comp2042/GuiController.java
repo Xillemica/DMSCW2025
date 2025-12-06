@@ -83,6 +83,9 @@ public class GuiController implements Initializable {
                 case SPACE -> refreshBrick(eventListener.onHardDropEvent());
             }
         }
+        if (keyEvent.getCode() == KeyCode.P) {
+            togglePause();
+        }
         if (keyEvent.getCode() == KeyCode.N) {
             newGame(null);
         }
@@ -208,4 +211,14 @@ public class GuiController implements Initializable {
     public void pauseGame(ActionEvent actionEvent) {
         gamePanel.requestFocus();
     }
+    
+    private void togglePause() {
+    if (isPause.get()) {
+        timeLine.play();
+        isPause.set(false);
+    } else {
+        timeLine.stop();
+        isPause.set(true);
+    }
+}
 }
