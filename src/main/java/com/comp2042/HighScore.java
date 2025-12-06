@@ -1,8 +1,8 @@
 package com.comp2042;
 
 public class HighScore implements Comparable<HighScore> {
-    private String name;
-    private int score;
+    private final String name;
+    private final int score;
 
     public HighScore(String name, int score) {
         this.name = name;

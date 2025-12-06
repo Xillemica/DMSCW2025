@@ -47,7 +47,7 @@ public class GuiController implements Initializable {
     private final BooleanProperty isPause = new SimpleBooleanProperty();
     private final BooleanProperty isGameOver = new SimpleBooleanProperty();
     private final Scoreboard scoreboard = new Scoreboard();
-    private Score score = new Score();
+    private final Score score = new Score();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -25,9 +25,9 @@ public class Scoreboard {
 
     public void addScore(HighScore score) {
         scores.add(score);
-        Collections.sort(scores);  
+        Collections.sort(scores);
         if (scores.size() > 5) {
-            scores = scores.subList(0, 5); 
+            scores = scores.subList(0, 5);
         }
         saveScores();
     }
