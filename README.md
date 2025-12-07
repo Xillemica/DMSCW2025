@@ -47,32 +47,13 @@ git clone <https://github.com/Xillemica/DMSCW2025>
 
 ## Preview of the Game (Screenshots)
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-
-  <figure style="margin: 0; text-align: center;">
-    <img src="tetris_images/1.png" width="200" />
-    <figcaption>Main menu with high scores</figcaption>
-  </figure>
-
-  <figure style="margin: 0; text-align: center;">
-    <img src="tetris_images/2.png" width="200" />
-    <figcaption>Gameplay with falling bricks</figcaption>
-  </figure>
-
-  <figure style="margin: 0; text-align: center;">
-    <img src="tetris_images/3.png" width="200" />
-    <figcaption>Game over screen</figcaption>
-  </figure>
-
-  <figure style="margin: 0; text-align: center;">
-    <img src="tetris_images/4.png" width="200" />
-    <figcaption>Save score screen</figcaption>
-  </figure>
-
-  <figure style="margin: 0; text-align: center;">
-    <img src="tetris_images/5.png" width="200" />
-    <figcaption>New score saved in Start Screen</figcaption>
-  </figure>
-
-</div>
+<table>
+<tr>
+  <td><img src="tetris_images/1.png" width="200"><br>Main menu</td>
+  <td><img src="tetris_images/2.png" width="200"><br>Gameplay</td>
+  <td><img src="tetris_images/3.png" width="200"><br>Game Over</td>
+  <td><img src="tetris_images/4.png" width="200"><br>Save Score</td>
+  <td><img src="tetris_images/5.png" width="200"><br>New Score</td>
+</tr>
+</table>
 
