@@ -28,9 +28,13 @@ None - All implemented features are fully functional.
 
 ## Features Not Implemented
 Ghost pieces
+
 Grid
+
 Highlight
+
 Hold piece
+
 Preview piece
 
 ## Controls
