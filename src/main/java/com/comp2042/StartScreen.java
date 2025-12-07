@@ -18,14 +18,23 @@ public class StartScreen {
     }
 
     public void show(Stage stage) {
-        VBox root = new VBox(20);
-        root.setStyle("-fx-alignment: center; -fx-padding: 50; -fx-background-color: #1e1e1e;");
+        VBox root = new VBox(7);
+        root.setStyle("-fx-alignment: center; -fx-padding: 25; -fx-background-color: #1e1e1e;");
 
         Label title = new Label("TETRIS");
         title.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
 
         Label scoreLabel = new Label("High Scores:");
         scoreLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #dddddd;");
+
+        Label controlsLabel = new Label("Controls:");
+        controlsLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #cccccc;");
+        
+        Label pauseLabel = new Label("P — Pause");
+        pauseLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #aaaaaa;");
+        
+        Label newGameLabel = new Label("N — New Game");
+        newGameLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #aaaaaa;");
 
         ListView<String> scoreList = new ListView<>();
         scoreList.setPrefSize(200, 200);
@@ -65,7 +74,7 @@ public class StartScreen {
             }
         );
 
-        root.getChildren().addAll(title, scoreLabel, scoreList, startButton);
+        root.getChildren().addAll(title, scoreLabel, scoreList, controlsLabel, pauseLabel, newGameLabel, startButton);
         
         Scene scene = new Scene(root, 300, 510);
         stage.setScene(scene);
