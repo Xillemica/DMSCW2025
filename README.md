@@ -1,16 +1,39 @@
-# Tetris JavaFX
+# Tetris JavaFX - Coursework Submission
+
+**Student Name:** Rebecca Anita Pereira  
+**Student ID:** 20619091  
+**GitHub Repository:** https://github.com/Xillemica/DMSCW2025  
+**IDE:** Visual Studio Code  
+**Java Version:** 23.0.1  
 
 A JavaFX-based Tetris game implementing classic Tetris mechanics with scores, high scores, and a simple GUI.
 
-## Installation
-1. Clone the repository:
-git clone <https://github.com/Xillemica/DMSCW2025>
-2. Open in your IDE.
-3. Ensure JavaFX SDK is added to your project.
-4. Open in terminal and run: mvn clean javafx:run
+## Compilation Instructions
+1. Clone the repository: `git clone https://github.com/Xillemica/DMSCW2025`
+2. Open in your IDE (IntelliJ IDEA, Eclipse, or VS Code with Java extensions)
+3. Ensure JavaFX SDK is added to your project module path
+4. Run using Maven: `mvn clean javafx:run`
+
+## Features Implemented and Working Properly
+- High score persistence to file (scores.txt)
+- Game Over screen with player name input
+- Start screen with high score display
+- Pause/Resume functionality (P key)
+- New game restart (N key)
+- Scoreboard display (H key)
+- High score
+
+## Features Implemented but Not Working Properly
+None - All implemented features are fully functional.
+
+## Features Not Implemented
+Ghost pieces
+Grid
+Highlight
+Hold piece
+Preview piece
 
 ## Controls
-
 | Key        | Action           |
 |:----------:|:----------------:|
 | Left / A   | Move brick left  |
@@ -22,47 +45,110 @@ git clone <https://github.com/Xillemica/DMSCW2025>
 | N          | Start new game   |
 | H          | Show scoreboard  |
 
-
-## Features / Project Structure
-
-1. com.comp2042 – Main package containing all game logic and GUI classes
-2. Board – Interface defining board behavior
-3. SimpleBoard – Implements Board, handles brick movement and collisions
-4. GuiController – Controls JavaFX GUI and user input
-5. GameController – Manages game flow and interactions between board and GUI
-6. BrickRotator – Handles rotation logic for bricks
-7. Score / Scoreboard / HighScore – Score management and persistence
-8. ViewData / DownData – DTOs for passing board and brick state to GUI
-9. NotificationPanel / GameOverPanel / StartScreen – GUI components
-10. MatrixOperations – Utility class for board matrix operations
-11. MoveEvent, EventType, EventSource – Event handling structures
-
 ## How to Play
-
 1. Launch the game
 2. Use the controls to move, rotate, and drop bricks.
 3. Clear lines to increase your score.
 4. When the game ends, enter your name to save your high score.
 5. Restart with the N key or close the game.
 
-## New Classes
+## New Java Classes
+| Class | Location | Purpose |
+|-------|----------|---------|
+| `StartScreen` | `com.comp2042` | Initial game menu with high scores |
+| `HighScore` | `com.comp2042` | Represents a player's score entry |
+| `Scoreboard` | `com.comp2042` | Manages loading/saving high scores |
 
-1. StartScreen
-2. HighScore
-3. Scoreboard
+## Modified Java Classes
+- GameController
+- GuiController
+- Main
+- SimpleBoard
+- GameOverPanel
+- MatrixOperations
+- NotificationPanel
 
-## Modified Classes
+## Refactoring Activities and Improvements
 
-1. GameController
-2. GuiController
-3. Main
-4. GameOverPanel
-5. MatrixOperations
-6. NotificationPanel
-7. SimpleBoard
+### 1. GameController.java (65 lines)
+| Problem | Solution | Impact |
+|---------|----------|--------|
+| Constructor doing too many things | Moved initialization to initGame() method | Better separation of concerns |
+| onDownEvent() too complex | Extracted logic into helper methods (handleBrickLanding(), updateAndGetView()) | Improved readability and testability |
+| Repeated getViewData() calls | Introduced helper method to reduce duplication | Better performance and maintainability |
+| Magic numbers in board initialization | Converted to constants BOARD_HEIGHT and BOARD_WIDTH | Easier configuration and understanding |
+| Board field safety | Made board field final as it's never reassigned | Thread safety and clear intent |
+
+### 2. GuiController.java (225 lines)
+| Problem | Solution | Impact |
+|---------|----------|--------|
+| Long initialize() method | Split into setupFont(), setupGameOverPanel(), setupReflectionEffect(), setupKeyEvents() | Single Responsibility Principle |
+| Repeated layout calculations | Created helper method positionBrickPanel() | DRY principle, reduces duplication |
+| Magic numbers throughout | Replaced with constants (BRICK_SIZE, FONT_SIZE, BRICK_ARC, etc.) | Easier maintenance and understanding |
+| Large switch in getFillColor() | Replaced with array lookup COLORS[] | Cleaner, more performant code |
+| Inline event handlers | Moved to separate handleKeyPress() method | Better organization and testability |
+| Complex moveDown() method | Simplified by extracting logic | Improved readability |
+| Verbose boolean checks | Changed isPause.getValue() == Boolean.FALSE to !isPause.get() | Cleaner, more idiomatic Java |
+| Unused imports/methods | Removed unused imports and bindscore() method | Cleaner codebase |
+
+### 3. Main.java (35 lines)
+| Problem | Solution | Impact |
+|---------|----------|--------|
+| start() method messy | Extracted startup logic | Cleaner method with single responsibility |
+| Unused ResourceBundle | Removed unused parameter and import | Reduced complexity |
+| Magic numbers | Defined as constants | Better configuration management |
+| Poor variable naming | Renamed c to guiController | Improved code clarity |
+
+### 4. MatrixOperations.java (100 lines)
+| Problem | Solution | Impact |
+|---------|----------|--------|
+| intersect() logic hard to read | Fixed variable names, fixed coordinate bug, simplified condition | Correct collision detection and better readability |
+| checkOutOfBound() confusing | Rewrote as isOutOfBounds() with direct boolean logic | Clearer intent and correct behavior |
+| copy() overly complex | Simplified to clean deep copy loop | Better performance and readability |
+| merge() indexing mistakes | Corrected indexing and improved readability | Fixed bug where bricks merged incorrectly |
+| checkRemoving() too complex | Extracted logic, renamed variables, clearer flow | Better understanding of row-clearing algorithm |
+| deepCopyList() unnecessarily complex | Replaced stream with simple for-loop | Better performance and readability |
+| Utility class instantiation risk | Added private constructor with comment | Prevents accidental instantiation |
+
+### 5. NotificationPanel.java (46 lines)
+| Problem | Solution | Impact |
+|---------|----------|--------|
+| Method name too specific | Renamed showScore() to show() | Better reflects general-purpose animation |
+| Poor variable naming | Improved descriptive names | Self-documenting code |
+| Animation logic cluttered | Extracted createFadeTransition() and createTranslateTransition() | Single Responsibility Principle |
+| Magic numbers | Replaced with constants (FADE_DURATION_MS, etc.) | Easier adjustment and understanding |
+| Verbose anonymous inner class | Replaced with lambda expression | Cleaner, more modern Java |
+
+### 6. SimpleBoard.java (127 lines)
+| Problem | Solution | Impact |
+|---------|----------|--------|
+| Movement logic duplicated | Consolidated into single moveBrick(dx, dy) method | DRY principle, less code duplication |
+| Magic spawn coordinates | Added SPAWN_POINT constant | Easier to adjust spawn location |
+| Inconsistent naming/style | Cleaned variable names and improved consistency | Better readability and maintainability |
+
+## Key Refactoring Principles Applied
+Single Responsibility Principle: Each class/method now has one clear purpose
+DRY (Don't Repeat Yourself): Eliminated code duplication
+Encapsulation: Made fields private with getters where appropriate
+Immutability: Used final for fields that shouldn't change
+Defensive Programming: Added array copying to prevent external mutation
+Self-Documenting Code: Improved naming and extracted methods
+Constant Management: Replaced magic numbers with named constants
+
+## Unit Testing (JUnit)
+Note: Due to the graphical nature of JavaFX and tight deadline, comprehensive JUnit tests were not implemented. However, the following testing strategies were employed:
+Manual testing of all game features
+
+## Demonstration Video Highlights
+In the accompanying Demo.mp4 video, I demonstrate:
+Two Proudest Achievements:
+Complete high score system with file persistence
+Consistent UI
+Showcase of the gameplay
+Overview of class diagram
+Additions and refactors
 
 ## Preview of the Game (Screenshots)
-
 <table>
 <tr>
   <td><img src="tetris_images/1.png" width="200"><br>Main menu</td>
@@ -73,17 +159,11 @@ git clone <https://github.com/Xillemica/DMSCW2025>
 </tr>
 </table>
 
-## Implemented and Working
-- Core Tetris gameplay
-- Score management
-- GUI with controls
-- High score
+## Credits and References
+Original codebase: https://github.com/kooitt/CW2025
 
-## Implemented but Not Working
-- None
+JavaFX Documentation: https://openjfx.io/
 
-## Notes
-- IDE: Visual Studio Code
-- Java Version: 23.0.1
+Coursework Specification: COMP2042 Software Maintenance
 
-All implemented features are working as expected. Some additional features were considered, but attempts to implement them caused instability, so they were omitted to maintain a working game.
+This project was submitted as partial fulfillment of the COMP2042 Software Maintenance module at the University of Nottingham.
