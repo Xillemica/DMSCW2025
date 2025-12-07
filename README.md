@@ -37,6 +37,14 @@ Hold piece
 
 Preview piece
 
+## Unexpected Problems
+
+1. File path issues: When first saving scores, relative paths behaved inconsistently. Fixed by standardising to scores.txt in the working directory.
+
+2. MatrixOperations bugs: Several hidden indexing errors caused bricks to merge incorrectly. Required deep debugging and rewriting large parts of the logic.
+
+3. Inconsistent original design patterns: Some classes had mixed responsibilities or unused fields, requiring additional refactoring to stabilise behavior before implementing new features.
+
 ## Controls
 | Key        | Action           |
 |:----------:|:----------------:|
