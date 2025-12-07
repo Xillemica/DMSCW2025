@@ -9,14 +9,34 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Represents the initial screen of the Tetris game.
+ * <p>
+ * Displays the game title, high scores, controls instructions, and a button to start the game.
+ * When the "Start Game" button is clicked, it initializes the main game interface.
+ */
 public class StartScreen {
 
+    /** The scoreboard used to display top scores on the start screen. */
     private final Scoreboard scoreboard;
 
+    /**
+     * Constructs a {@code StartScreen} with the specified {@link Scoreboard}.
+     *
+     * @param scoreboard the scoreboard containing high scores
+     */
     public StartScreen(Scoreboard scoreboard) {
         this.scoreboard = scoreboard;
     }
 
+    /**
+     * Displays the start screen on the specified {@link Stage}.
+     * <p>
+     * The screen shows the title, high scores, controls instructions, and a start button.
+     * Clicking the start button loads the main game layout and starts the game.
+     *
+     * @param stage the JavaFX stage on which to display the start screen
+     */
     public void show(Stage stage) {
         VBox root = new VBox(7);
         root.setStyle("-fx-alignment: center; -fx-padding: 25; -fx-background-color: #1e1e1e;");

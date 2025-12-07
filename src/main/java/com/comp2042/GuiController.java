@@ -26,6 +26,12 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Manages the JavaFX GUI for the Tetris game.
+ * <p>
+ * Handles user input, updates the game board view, manages the brick display,
+ * displays notifications and scores, and controls game state (pause, game over, new game).
+ */
 public class GuiController implements Initializable {
 
     private static final int BRICK_SIZE = 20;
@@ -50,12 +56,23 @@ public class GuiController implements Initializable {
     private final BooleanProperty isGameOver = new SimpleBooleanProperty();
     private final Scoreboard scoreboard = new Scoreboard();
     private IntegerProperty currentScore;
-    
+
+    /**
+     * Binds the given score property to the GameOverPanel and keeps a reference
+     * for saving the score at game over.
+     *
+     * @param scoreProperty the integer property representing the player's score
+     */
     public void bindScore(IntegerProperty scoreProperty) {
         this.currentScore = scoreProperty;
         gameOverPanel.bindScore(scoreProperty); 
     }
 
+    /**
+     * Initializes the GUI controller when the FXML is loaded.
+     * <p>
+     * Sets up font, game over panel, reflection effect, and key event handling.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupFont();
@@ -108,6 +125,12 @@ public class GuiController implements Initializable {
         keyEvent.consume();
     }
 
+    /**
+     * Initializes the game view with the given board matrix and brick data.
+     *
+     * @param boardMatrix the 2D integer array representing the game board
+     * @param brick the view data for the current falling brick
+     */
     public void initGameView(int[][] boardMatrix, ViewData brick) {
         setupDisplayMatrix(boardMatrix);
         setupBrickRectangles(brick);
@@ -168,6 +191,11 @@ public class GuiController implements Initializable {
         }
     }
 
+    /**
+     * Updates the main game panel with the current board state.
+     *
+     * @param board the 2D integer array representing the board
+     */
     public void refreshGameBackground(int[][] board) {
         for (int i = 2; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
@@ -199,20 +227,21 @@ public class GuiController implements Initializable {
             notificationPanel.showScore(groupNotification.getChildren());
         }
     }
+
     private void saveScoreAtGameOver() {
-    int finalScore = currentScore.get();
+        int finalScore = currentScore.get();
     
-    TextInputDialog dialog = new TextInputDialog("Player");
-    dialog.setHeaderText("Game Over! Your score: " + finalScore);
-    dialog.setContentText("Enter your name:");
+        TextInputDialog dialog = new TextInputDialog("Player");
+        dialog.setHeaderText("Game Over! Your score: " + finalScore);
+        dialog.setContentText("Enter your name:");
 
-    Optional<String> result = dialog.showAndWait();
-    String name = result.orElse("Anonymous");
+        Optional<String> result = dialog.showAndWait();
+        String name = result.orElse("Anonymous");
 
-    scoreboard.addScore(new HighScore(name, finalScore));
-    scoreboard.saveScores();
+        scoreboard.addScore(new HighScore(name, finalScore));
+        scoreboard.saveScores();
     }
-    
+
     private void showScoreboard() {
         StringBuilder sb = new StringBuilder("Top 5 Scores:\n\n");
         
@@ -223,17 +252,26 @@ public class GuiController implements Initializable {
             .append("\n");
         }
 
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle("Scoreboard");
-    alert.setHeaderText("High Scores");
-    alert.setContentText(sb.toString());
-    alert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Scoreboard");
+        alert.setHeaderText("High Scores");
+        alert.setContentText(sb.toString());
+        alert.showAndWait();
     }
 
+    /**
+     * Sets the {@link InputEventListener} to handle game input events.
+     *
+     * @param eventListener the input event listener
+     */
     public void setEventListener(InputEventListener eventListener) {
         this.eventListener = eventListener;
     }
     
+    /**
+     * Handles game over state: stops the timeline, shows the game over panel,
+     * sets the game over flag, and saves the player's score.
+     */
     public void gameOver() {
         timeLine.stop();
         gameOverPanel.setVisible(true);
@@ -241,6 +279,11 @@ public class GuiController implements Initializable {
         saveScoreAtGameOver();
     }
 
+    /**
+     * Starts a new game, resetting game state and timeline.
+     *
+     * @param actionEvent the triggering action event
+     */
     public void newGame(ActionEvent actionEvent) {
         timeLine.stop();
         gameOverPanel.setVisible(false);
@@ -251,21 +294,31 @@ public class GuiController implements Initializable {
         isGameOver.set(false);
     }
 
+    /**
+     * Handles pausing the game (currently just refocuses the panel).
+     *
+     * @param actionEvent the triggering action event
+     */
     public void pauseGame(ActionEvent actionEvent) {
         gamePanel.requestFocus();
     }
 
     private void togglePause() {
-    if (isPause.get()) {
-        timeLine.play();
-        isPause.set(false);
-    } else {
-        timeLine.stop();
-        isPause.set(true);
-    }
+        if (isPause.get()) {
+            timeLine.play();
+            isPause.set(false);
+        } else {
+            timeLine.stop();
+            isPause.set(true);
+        }
     }
     
+    /**
+     * Returns the root {@link GridPane} of the game panel.
+     *
+     * @return the main game panel
+     */
     public GridPane getRootPane() {
-    return gamePanel;
+        return gamePanel;
     }
 }
