@@ -148,17 +148,26 @@ Self-Documenting Code: Improved naming and extracted methods
 Constant Management: Replaced magic numbers with named constants
 
 ## Unit Testing (JUnit)
-Note: Due to the graphical nature of JavaFX and tight deadline, comprehensive JUnit tests were not implemented. However, the following testing strategies were employed:
-Manual testing of all game features
+Due to the time constraints and JavaFX’s graphical nature, JUnit tests were not fully implemented.
+Manual testing included:
+
+- Gameplay movements
+- Line clearing
+- Score saving and loading
+- Start screen navigation
+- Pause/resume
+- Game Over name entry
+- UI consistency on all screens
 
 ## Demonstration Video Highlights
-In the accompanying Demo.mp4 video, I demonstrate:
-Two Proudest Achievements:
-Complete high score system with file persistence
-Consistent UI
-Showcase of the gameplay
-Overview of class diagram
-Additions and refactors
+The demo demonstrates:
+Two achievements I’m most proud of:
+- Fully functional high score system with file persistence
+- Complete UI consistency + Start Screen integration
+
+Additionally, it includes:
+- Gameplay demonstration
+- Overview of refactors and additions.
 
 ## Preview of the Game (Screenshots)
 <table>
