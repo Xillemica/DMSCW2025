@@ -45,6 +45,22 @@ git clone <https://github.com/Xillemica/DMSCW2025>
 4. When the game ends, enter your name to save your high score.
 5. Restart with the N key or close the game.
 
+## New Classes
+
+1. StartScreen
+2. HighScore
+3. Scoreboard
+
+## Modified Classes
+
+1. GameController
+2. GuiController
+3. Main
+4. GameOverPanel
+5. MatrixOperations
+6. NotificationPanel
+7. SimpleBoard
+
 ## Preview of the Game (Screenshots)
 
 <table>
@@ -57,3 +73,17 @@ git clone <https://github.com/Xillemica/DMSCW2025>
 </tr>
 </table>
 
+## Implemented and Working
+- Core Tetris gameplay
+- Score management
+- GUI with controls
+- High score
+
+## Implemented but Not Working
+- None
+
+## Notes
+- IDE: Visual Studio Code
+- Java Version: 23.0.1
+
+All implemented features are working as expected. Some additional features were considered, but attempts to implement them caused instability, so they were omitted to maintain a working game.
